@@ -54,3 +54,33 @@ export const getSavedPost = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+export const unSavePost = async (req, res) => {
+  const { userId, postId } = req.params;
+
+  try {
+    // 1️⃣ Find the user
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    // 2️⃣ Check if post exists in savedPosts
+    const isSaved = user.savedPosts.includes(postId);
+    if (!isSaved)
+      return res.status(400).json({ message: "Post not found in saved posts" });
+
+    // 3️⃣ Remove post from savedPosts
+    user.savedPosts = user.savedPosts.filter(
+      (id) => id.toString() !== postId.toString()
+    );
+
+    // 4️⃣ Save updated user
+    await user.save();
+
+    // 5️⃣ Respond success
+    res.status(200).json({ message: "Post unsaved successfully" });
+  } catch (err) {
+    console.error("Error in unSavePost:", err.message);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+

@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const BASE_URL = "http://192.168.233.101:3500/api";
+const BASE_URL = "https://project-1-server.onrender.com/api";
+
 
 async function testEndpoints() {
   try {

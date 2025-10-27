@@ -11,7 +11,7 @@ import {
 } from "../controller/postController.js";
 import { AddLike , Unlike } from "../controller/likesController.js";
 import { EditPost , deletePost } from "../controller/updatePostController.js"
-import { savePost , getSavedPost } from "../controller/saveController.js"
+import { savePost , getSavedPost, unSavePost } from "../controller/saveController.js"
 const Postrouter = express.Router();
 
 // Get all posts (paginated)
@@ -25,6 +25,8 @@ Postrouter.get("/user/:id", GetOneUser);
 
 // Add new post for a user
 Postrouter.patch("/user/:id", AddNewPost);
+//Add replay
+Postrouter.post("/:postId/reply",addReplyToPost);
 
 // Follow / unfollow routes
 Postrouter.patch("/user/followers/:id/:local_id", AddFollowers);
@@ -43,6 +45,7 @@ Postrouter.delete("/user/deletepost/:id/:post_id", deletePost);
 // Save post
 Postrouter.post("/user/:userId/save/:postId", savePost);
 Postrouter.get("/user/:userId/save", getSavedPost);
+Postrouter.patch('/user/:userId/unsave/:postId', unSavePost);
 
 // Get single post by postId (must be last to avoid conflicts)
 Postrouter.get("/:postId", getPostById);

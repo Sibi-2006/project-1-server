@@ -1,7 +1,5 @@
 import express from "express";
 import cors from "cors";
-import path from "path";
-import { fileURLToPath } from "url";
 import { getDataBase } from "./db.js";
 import router from "./routers/formRouter.js";
 import postRouter from "./routers/postRouter.js";
@@ -9,9 +7,7 @@ import postRouter from "./routers/postRouter.js";
 const app = express();
 const PORT = process.env.PORT || 3500;
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
+// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({ origin: "*" }));
@@ -20,13 +16,7 @@ app.use(cors({ origin: "*" }));
 app.use("/api/form", router);
 app.use("/api/post", postRouter);
 
-// Serve React frontend (adjust path if needed)
-app.use(express.static(path.join(__dirname, "../../build")));
-
-app.get(/.*/, (req, res) => {
-  res.sendFile(path.join(__dirname, "../project-1/build", "index.html"));
-});
-
+// Start server after DB connection
 const startServer = async () => {
   try {
     await getDataBase();
