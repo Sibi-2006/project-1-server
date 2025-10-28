@@ -10,8 +10,9 @@ import {
   RemoveFollower
 } from "../controller/postController.js";
 import { AddLike , Unlike } from "../controller/likesController.js";
-import { EditPost , deletePost } from "../controller/updatePostController.js"
-import { savePost , getSavedPost, unSavePost } from "../controller/saveController.js"
+import { EditPost , deletePost } from "../controller/updatePostController.js";
+import { savePost , getSavedPost, unSavePost } from "../controller/saveController.js";
+import { getFollowers , getFollwing} from "../controller/followController.js"
 const Postrouter = express.Router();
 
 // Get all posts (paginated)
@@ -32,6 +33,9 @@ Postrouter.post("/:postId/reply",addReplyToPost);
 Postrouter.patch("/user/followers/:id/:local_id", AddFollowers);
 Postrouter.patch("/user/unfollow/:id/:local_id", RemoveFollower);
 
+//to show following and followers
+Postrouter.get("/user/:id/followers",getFollowers);
+Postrouter.get("/user/:id/following",getFollwing)
 // Likes
 Postrouter.patch("/user/like/:userId/:local_id/:postId", AddLike);
 Postrouter.patch("/user/unlike/:userId/:local_id/:postId", Unlike);
